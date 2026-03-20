@@ -245,29 +245,18 @@ Overall confidence score formula:
 
 ## 🐛 Challenges & Solutions
 
-| # | Challenge | Root Cause |
-
+| # | Challenge | Root Cause | Solution |
 |---|---|---|---|
-| 1 | ChatGPT / Claude / Gemini APIs unavailable | All major LLM APIs require paid subscriptions — not feasible for a student project 
-Solution - Used orca_mini_3b.IQ3_M.gguf — a free, open-source model that runs entirely on local CPU with zero API cost 
-| 2 | llama-cpp-python fails to install on Python 3.13 | No pre-built wheel — requires C++ compiler 
-Solution - Install Visual Studio Build Tools with "Desktop development with C++".
-| 3 | integer divide by zero error loading the model | ctransformers does not support IQ3_M quantization format 
-Solution - Switched to llama-cpp-python which handles IQ3_M correctly.
-| 4 | LLM hallucinating fake candidate answers in transitions | 3B model too small to comment reliably on specific answers 
-solution - Removed LLM from transitions entirely — hardcoded "Thank you for your answer" .
-| 5 | LLM generating conversational filler instead of questions | Model ignores format at higher temperature 
-Solution - Added strict format constraints, temperature=0.4, output validation requiring ? 
-| 6 | Bold text rendering blank in chat bubbles | Streamlit HTML sanitizer strips bold and italic tags from unsafe_allow_html content 
-Solution - Switched chat to st.components.v1.html() — renders in sandboxed iframe, no sanitizer .
-| 7 | Chat message order wrong | Both messages stored in one dict — no guaranteed render order 
-solution- Store user message first, then bot reply as separate role/text entries .
-| 8 | Input not clearing after send | Streamlit has no native clear API 
-Solution -  Dynamic widget key inp_{counter} — incrementing forces a fresh empty input widget 
-| 9 | IndexError: list index out of range on question stage | Streamlit reruns script on every interaction — q_idx incremented twice before lock 
-Solution - Triple guard: bounds check on q_idx, stage check, _li lock set before handle() call 
-| 10 | Enter key not working | st.text_input only triggers on value change 
-Solution - Added has_new check: user_input.strip() != s._li fires on Enter without needing the button 
+| 1 | ChatGPT / Claude / Gemini APIs unavailable | All major LLM APIs require paid subscriptions — not feasible for a student project | Used orca_mini_3b.IQ3_M.gguf — a free, open-source model that runs entirely on local CPU with zero API cost |
+| 2 | llama-cpp-python fails to install on Python 3.13 | No pre-built wheel — requires C++ compiler | Install Visual Studio Build Tools with "Desktop development with C++" |
+| 3 | integer divide by zero error loading the model | ctransformers does not support IQ3_M quantization format | Switched to llama-cpp-python which handles IQ3_M correctly |
+| 4 | LLM hallucinating fake candidate answers in transitions | 3B model too small to comment reliably on specific answers | Removed LLM from transitions entirely — hardcoded "Thank you for your answer" |
+| 5 | LLM generating conversational filler instead of questions | Model ignores format at higher temperature | Added strict format constraints, temperature=0.4, output validation requiring ? | 
+| 6 | Bold text rendering blank in chat bubbles | Streamlit HTML sanitizer strips bold and italic tags from unsafe_allow_html content | Switched chat to st.components.v1.html() — renders in sandboxed iframe, no sanitizer |
+| 7 | Chat message order wrong | Both messages stored in one dict — no guaranteed render order | Store user message first, then bot reply as separate role/text entries |
+| 8 | Input not clearing after send | Streamlit has no native clear API | Dynamic widget key inp_{counter} — incrementing forces a fresh empty input widget |
+| 9 | IndexError: list index out of range on question stage | Streamlit reruns script on every interaction — q_idx incremented twice before lock | Triple guard: bounds check on q_idx, stage check, _li lock set before handle() call |
+| 10 | Enter key not working | st.text_input only triggers on value change | Added has_new check: user_input.strip() != s._li fires on Enter without needing the button | 
 
 ---
 
