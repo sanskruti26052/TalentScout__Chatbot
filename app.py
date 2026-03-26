@@ -29,7 +29,7 @@ except ImportError:
 # DATABASE  — SQLite, stores every completed interview persistently
 # ─────────────────────────────────────────────────────────────────────────────
 DB_PATH    = "talentscout_candidates.db"
-ADMIN_PASS = "admin123"   # change this in production
+ADMIN_PASS = "admin123"   
 
 def db_connect():
     """Return a connection to the SQLite database, creating tables if needed."""
@@ -538,7 +538,7 @@ def handle(llm, user_input: str) -> str:
             c["end_time"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
             advance()
             summary = sentiment_score_summary(s.sentiments)
-            # ── Persist to database ───────────────────────────────────────
+            
             try:
                 db_save_candidate(
                     candidate       = c,
@@ -1115,9 +1115,9 @@ def render_end():
             del st.session_state[k]
         st.rerun()
 
-# ─────────────────────────────────────────────────────────────────────────────
+
 # MAIN
-# ─────────────────────────────────────────────────────────────────────────────
+
 def main():
     st.set_page_config(
         page_title="TalentScout – Hiring Assistant",
